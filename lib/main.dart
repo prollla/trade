@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:trade/models/productModel.dart'; // Импортируйте вашу модель данных
+import 'package:trade/page/cartScreen.dart';
+import 'package:trade/page/makeOrderScreen.dart';
+import 'package:trade/page/orderPage.dart';
+import 'package:trade/page/productDetailsScreen.dart';
 import 'package:trade/service/apiService.dart';
 import 'package:trade/page/productScreen.dart'; // Импортируйте ваш ApiService
 
@@ -29,13 +33,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My App',
+      initialRoute: '/catalog',
+      routes: {
+        '/catalog' : (context) => ProductsScreen(products: products),
+        '/cart' : (context) => CartScreen(),
+        '/orders' : (context) => OrderScreen(),
+      },
       theme: ThemeData(
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.black
         )
       ),
-      home: ProductsScreen(products: products),
     );
   }
 }

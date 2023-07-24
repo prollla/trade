@@ -50,6 +50,7 @@ class ProductDetailsScreen extends StatelessWidget {
               '${product.oldPrice?.split(".")[0] ?? ""}${product.oldPrice != null ? " ₽" : ""}',
               style: const TextStyle(fontSize: 18, decoration: TextDecoration.lineThrough),
             ),
+            Text('Бренд: ${product.brand}', style: TextStyle(fontSize: 24),)
 
             // Добавьте другие поля о товаре по аналогии
           ],
@@ -60,17 +61,13 @@ class ProductDetailsScreen extends StatelessWidget {
         onTap: (index) {
           // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
-            // Переход на экран "Витрина"
-             // Возвращение на предыдущий экран
+
           } else if (index == 1) {
-            Navigator.pop(context);
+            Navigator.pop(context, '/catalog');
           } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CartScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, '/cart');
+          } else if( index == 3){
+            Navigator.pushNamed(context, '/orders');
           }
         },
         items: BottomNavBarItemsProvider.items,

@@ -159,13 +159,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<PaymentMethod> paymentData() async {
+  Future<List<PaymentMethod>> paymentData() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<PaymentMethod>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<PaymentMethod>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -181,7 +181,9 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = PaymentMethod.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => PaymentMethod.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
@@ -210,6 +212,63 @@ class _ApiService implements ApiService {
             ))));
     var value = _result.data!
         .map((dynamic i) => Order.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<Order> makeOrder(Map<String, dynamic> requestBody) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(requestBody);
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Order>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order/order/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = Order.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<Delivery>> deliveryData() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Delivery>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/deliveries/deliveries/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => Delivery.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

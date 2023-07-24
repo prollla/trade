@@ -106,6 +106,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(
           'Список товаров',
@@ -129,21 +130,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
           if (index == 0) {
 
           } else if (index == 1) {
-            //
+            Navigator.pushReplacementNamed(context, '/catalog');
           } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CartScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, '/cart');
           } else if( index == 3){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OrderScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, '/orders');
           }
         },
         items: BottomNavBarItemsProvider.items,

@@ -9,7 +9,7 @@ part of 'cartModel.dart';
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       id: json['id'] as int,
       price: json['price'] as String,
-      oldPrice: json['old_price'] as String?,
+      oldPrice: json['oldPrice'] as String?,
       discount: json['discount'] as String,
       name: json['name'] as String,
       brand: json['brand'] as String,
@@ -54,7 +54,7 @@ Map<String, dynamic> _$BadgeToJson(Badge instance) => <String, dynamic>{
 
 CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
       price: json['price'] as String,
-      oldPrice: json['old_price'] as String?,
+      oldPrice: json['oldPrice'] as String?,
       count: json['count'] as int,
       products: (json['products'] as List<dynamic>)
           .map((e) => ProductItem.fromJson(e as Map<String, dynamic>))

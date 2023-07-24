@@ -10,12 +10,12 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       id: json['id'] as int?,
       price: json['price'] as String?,
       discount: (json['discount'] as num?)?.toDouble(),
-      oldPrice: json['old_price'] as String?,
+      oldPrice: json['oldPrice'] as String?,
       name: json['name'] as String?,
       article: json['article'] as String?,
       picture: json['picture'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
-      reviewsCount: json['reviews_count'] as int?,
+      reviewsCount: json['reviewsCount'] as int?,
       brand: json['brand'] as String?,
       badges: (json['badges'] as List<dynamic>)
           .map((e) => Badge.fromJson(e as Map<String, dynamic>))

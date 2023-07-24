@@ -7,6 +7,8 @@ import 'package:trade/models/orderListModel.dart';
 
 import 'package:trade/service/authInterceptor.dart';
 
+import '../models/deliveryModel.dart';
+
 part 'apiService.g.dart';
 
 @RestApi(baseUrl: "https://farm.fbtw.ru")
@@ -34,8 +36,14 @@ abstract class ApiService {
   Future<CartResponse> calculateCart();
 
   @POST("/payments/")
-  Future<PaymentMethod> paymentData();
+  Future<List<PaymentMethod>> paymentData();
 
   @GET("/order/list/")
   Future<List<Order>> orderData();
+
+  @POST("/order/order/")
+  Future<Order> makeOrder(@Body() Map<String, dynamic> requestBody);
+
+  @POST("/deliveries/deliveries/")
+  Future<List<Delivery>> deliveryData();
 }

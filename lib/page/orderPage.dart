@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:retrofit/retrofit.dart';
 import 'package:trade/models/orderListModel.dart'; // Замените на путь к вашим моделям данных
-import 'package:trade/service/apiService.dart'; // Замените на путь к вашему сервису Retrofit
+import 'package:trade/service/apiService.dart';
+
+import 'BottomNavBarItemsProvider.dart';
+import 'orderDetailsScreen.dart'; // Замените на путь к вашему сервису Retrofit
 
 class OrderScreen extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  final int _currentIndex = 3;
   List<Order> _orders = [];
   bool _isLoading = false;
   final ApiService _orderService =
@@ -40,7 +43,13 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Список заказов'),
+        iconTheme: const IconThemeData(color: Colors.black),
+        centerTitle: true,
+        title: const Text(
+          'Список заказов',
+          style: TextStyle(fontSize: 21, color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: _isLoading
           ? Center(
@@ -84,43 +93,19 @@ class _OrderScreenState extends State<OrderScreen> {
                     );
                   },
                 ),
-    );
-  }
-}
-
-class OrderDetailsScreen extends StatelessWidget {
-  final Order order;
-
-  OrderDetailsScreen({required this.order});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Детали заказа №${order.id}'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Имя пользователя: ${order.userName}'),
-            SizedBox(height: 8),
-            Text('Телефон пользователя: ${order.userPhone}'),
-            SizedBox(height: 8),
-            Text('Дата создания заказа: ${order.createdAt}'),
-            SizedBox(height: 8),
-            Text('Сумма заказа: ${order.fullPrice}'),
-            SizedBox(height: 8),
-            Text(
-                'Статус заказа: ${order.status == 0 ? 'В ожидании' : 'Выполнен'}'),
-            SizedBox(height: 8),
-            Text('Товары в заказе:'),
-            SizedBox(height: 8),
-            ...order.items.map(
-                (item) => Text('- ${item.name}, Количество: ${item.count}')),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          if (index == 0) {
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/catalog');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/cart');
+          } else if (index == 3) {
+            Navigator.pushReplacementNamed(context, '/orders');
+          }
+        },
+        items: BottomNavBarItemsProvider.items,
       ),
     );
   }

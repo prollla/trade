@@ -10,7 +10,7 @@ class Order {
   String? userName;
   String? userPhone;
   String? userEmail;
-  String? createdAt;
+  String createdAt;
   String? deliveryId;
   String? deliveryType;
   String? deliveryName;

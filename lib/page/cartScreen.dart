@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:trade/models/cartModel.dart';
+import 'package:trade/page/makeOrderScreen.dart';
 import 'package:trade/service/apiService.dart';
 
 import 'BottomNavBarItemsProvider.dart';
@@ -94,6 +95,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(
           'Корзина',
@@ -189,9 +191,14 @@ class _CartScreenState extends State<CartScreen> {
         onTap: (index) {
           // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
+
           } else if (index == 1) {
-            Navigator.pop(context);
-          } else if (index == 2) {}
+            Navigator.pushNamed(context, '/catalog');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/cart');
+          } else if( index == 3){
+            Navigator.pushNamed(context, '/orders');
+          }
         },
         items: BottomNavBarItemsProvider.items,
       ),
@@ -220,11 +227,18 @@ class _CartScreenState extends State<CartScreen> {
                         width: 360,
                         height: 50,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MakeOrderScreen(),
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                             ),
-                            child: const Text("Оформить заказ")),
+                            child: const Text("Перейти к оформлению заказа")),
                       ),
                     )
                   ],
