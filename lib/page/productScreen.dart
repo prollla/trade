@@ -6,6 +6,7 @@ import 'package:trade/page/orderPage.dart';
 import 'package:trade/page/productDetailsScreen.dart';
 import 'package:trade/page/cartScreen.dart';
 
+import '../models/sortingOptionModel.dart';
 import '../service/apiService.dart';
 import 'BottomNavBarItemsProvider.dart';// Импортируйте вашу модель данных
 
@@ -91,16 +92,61 @@ class ProductCard extends StatelessWidget {
 }
 
 class ProductsScreen extends StatefulWidget {
-  final List<Product> products;
-
-  ProductsScreen({required this.products});
-
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
   int _currentIndex = 1;
+  ApiService? _apiService;
+  List<Product> _products = [];
+  List<SortingOption> _sortingOptions = [];
+  bool _isLoading = true;
+  String? _selectedSortingOption;
+
+  @override
+  void initState() {
+    super.initState();
+    _apiService = ApiService(Dio());
+    _fetchSortingOptions();
+  }
+
+  Future<void> _fetchSortingOptions() async {
+    try {
+      List<SortingOption> sortingOptions = await _apiService!.sortData();
+      setState(() {
+        _sortingOptions = sortingOptions;
+        _selectedSortingOption = sortingOptions.isNotEmpty ? sortingOptions[0].id : null;
+        _fetchProductData();
+      });
+    } catch (e) {
+      print("Error sort data: $e");
+    }
+  }
+
+  Future<void> _fetchProductData() async {
+    try {
+      if (_selectedSortingOption == null) {
+        return;
+      }
+
+      Map<String, dynamic> requestBody = {
+        "sort_by": _selectedSortingOption,
+      };
+
+      ApiResponse response = await _apiService!.postProductData(requestBody);
+      setState(() {
+        _products = response.results;
+        _isLoading = false;
+      });
+    } catch (e) {
+      // Обработка ошибок
+      setState(() {
+        _isLoading = false;
+      });
+      print("Error fetching data: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,27 +159,46 @@ class _ProductsScreenState extends State<ProductsScreen> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              setState(() {
+                _selectedSortingOption = value;
+                _isLoading = true;
+                _fetchProductData();
+              });
+            },
+            itemBuilder: (context) {
+              return _sortingOptions.map((option) {
+                return PopupMenuItem<String>(
+                  value: option.id,
+                  child: Text(option.name),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
-      body: GridView.builder(
+      body: _isLoading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
+          : GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 16,
         ),
-        itemCount: widget.products.length,
-        itemBuilder: (context, index) =>
-            ProductCard(product: widget.products[index]),
+        itemCount: _products.length,
+        itemBuilder: (context, index) => ProductCard(product: _products[index]),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          // Обработчик нажатий на элементы нижней панели
-          if (index == 0) {
-
-          } else if (index == 1) {
+          if (index == 0) {} else if (index == 1) {
             Navigator.pushReplacementNamed(context, '/catalog');
           } else if (index == 2) {
             Navigator.pushNamed(context, '/cart');
-          } else if( index == 3){
+          } else if (index == 3) {
             Navigator.pushNamed(context, '/orders');
           }
         },
@@ -142,3 +207,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 }
+
+
+
+
+
+

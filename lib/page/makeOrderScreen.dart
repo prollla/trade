@@ -66,16 +66,11 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
     };
 
     try {
-      // Выполните запрос оформления заказа
       await apiService.makeOrder(requestBody);
-      // Нет необходимости объявлять и использовать переменную order
     } on DioException catch (e) {
-      // Обработка ошибок
       if (e.response != null) {
-        // Проверяем, есть ли в ответе поле error_text
         if (e.response!.data.containsKey('error_text')) {
           String errorText = e.response!.data['error_text'];
-          // Отображаем SnackBar с текстом ошибки
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(errorText)),
           );
@@ -104,7 +99,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Выберите способ доставки:'),
+          const Text('Выберите способ доставки:'),
           Wrap(
             spacing: 8.0,
             children: deliveries.map((delivery) {
@@ -115,7 +110,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: delivery == selectedDelivery
@@ -137,7 +132,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                         errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                       ),
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Text(delivery.title),
                     ],
                   ),
@@ -147,7 +142,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
           ),
           SizedBox(
               height: 16.0), // Разделитель между способами доставки и оплаты
-          Text('Выберите способ оплаты:'),
+          const Text('Выберите способ оплаты:'),
           Wrap(
             spacing: 8.0,
             children: paymentMethods.map((payment) {
@@ -180,7 +175,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                         errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                       ),
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Text(payment.title),
                     ],
                   ),
@@ -195,7 +190,6 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
         height: 50,
         child: ElevatedButton(
           onPressed: () {
-            // Здесь обработайте нажатие кнопки "Оформить заказ" с выбранными доставкой и оплатой
             if (selectedDelivery != null && selectedPaymentMethod != null) {
               _makeOrder();
               Navigator.pushNamed(context, '/orders');
@@ -204,7 +198,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
           ),
-          child: Text('Оформить заказ'),
+          child: const Text('Оформить заказ'),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

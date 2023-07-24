@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:trade/models/orderListModel.dart'; // Замените на путь к вашим моделям данных
+import 'package:trade/models/orderListModel.dart';
 import 'package:trade/service/apiService.dart';
 
 import 'BottomNavBarItemsProvider.dart';
-import 'orderDetailsScreen.dart'; // Замените на путь к вашему сервису Retrofit
+import 'orderDetailsScreen.dart';
 
 class OrderScreen extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _OrderScreenState extends State<OrderScreen> {
   List<Order> _orders = [];
   bool _isLoading = false;
   final ApiService _orderService =
-      ApiService(Dio()); // Замените на ваш сервис Retrofit
+      ApiService(Dio());
 
   Future<void> _fetchOrders() async {
     setState(() {
@@ -52,11 +52,11 @@ class _OrderScreenState extends State<OrderScreen> {
         backgroundColor: Colors.white,
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : _orders.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text('Список заказов пуст'),
                 )
               : ListView.builder(
@@ -77,9 +77,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         title: Text('Заказ №${order.id}'),
                         subtitle: Text('Дата создания: ${order.createdAt}'),
                         trailing: IconButton(
-                          icon: Icon(Icons.arrow_forward),
+                          icon: const Icon(Icons.arrow_forward),
                           onPressed: () {
-                            // При нажатии на заказ, перейти на экран с деталями заказа
                             Navigator.push(
                               context,
                               MaterialPageRoute(

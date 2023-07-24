@@ -48,21 +48,20 @@ class _CartScreenState extends State<CartScreen> {
 
   void _addToCart(ProductItem productItem) {
     setState(() {
-      productItem.count++; // Увеличиваем количество товаров
+      productItem.count++;
     });
   }
 
   void _removeFromCart(ProductItem productItem) {
     setState(() {
       if (productItem.count > 0) {
-        productItem.count--; // Уменьшаем количество товаров, если оно больше 0
+        productItem.count--;
       }
     });
   }
 
   void _updateCartData(ProductItem productItem) async {
     if (productItem.count == 0) {
-      // Если количество товаров равно 0, выполнить DELETE запрос
       try {
         Map<String, dynamic> requestBody = {
           "product_id": productItem.product.id,
@@ -75,7 +74,6 @@ class _CartScreenState extends State<CartScreen> {
         print("Ошибка при выполнении DELETE-запроса: $error");
       }
     } else {
-      // Иначе выполнить PUT запрос с новым количеством товаров
       try {
         Map<String, dynamic> requestBody = {
           "product_id": productItem.product.id,

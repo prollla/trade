@@ -9,7 +9,7 @@ part of 'cartModel.dart';
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       id: json['id'] as int,
       price: json['price'] as String,
-      oldPrice: json['oldPrice'] as String?,
+      oldPrice: json['old_price'] as String?,
       discount: json['discount'] as String,
       name: json['name'] as String,
       brand: json['brand'] as String,
@@ -25,7 +25,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'id': instance.id,
       'price': instance.price,
-      'oldPrice': instance.oldPrice,
+      'old_price': instance.oldPrice,
       'discount': instance.discount,
       'name': instance.name,
       'brand': instance.brand,
@@ -54,7 +54,7 @@ Map<String, dynamic> _$BadgeToJson(Badge instance) => <String, dynamic>{
 
 CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
       price: json['price'] as String,
-      oldPrice: json['oldPrice'] as String?,
+      oldPrice: json['old_price'] as String?,
       count: json['count'] as int,
       products: (json['products'] as List<dynamic>)
           .map((e) => ProductItem.fromJson(e as Map<String, dynamic>))
@@ -64,7 +64,7 @@ CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
 Map<String, dynamic> _$CartResponseToJson(CartResponse instance) =>
     <String, dynamic>{
       'price': instance.price,
-      'oldPrice': instance.oldPrice,
+      'old_price': instance.oldPrice,
       'count': instance.count,
       'products': instance.products,
     };

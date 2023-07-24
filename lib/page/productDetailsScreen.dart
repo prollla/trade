@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import '../models/productModel.dart';
 import 'BottomNavBarItemsProvider.dart';
-import 'cartScreen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final Product product;
@@ -52,14 +50,12 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
             Text('Бренд: ${product.brand}', style: TextStyle(fontSize: 24),)
 
-            // Добавьте другие поля о товаре по аналогии
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Здесь вы можете установить индекс активного элемента нижней панели
+        currentIndex: 1,
         onTap: (index) {
-          // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
 
           } else if (index == 1) {

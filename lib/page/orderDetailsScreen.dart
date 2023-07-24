@@ -37,18 +37,18 @@ class OrderDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Имя пользователя: ${order.userName}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text('Телефон пользователя: ${order.userPhone}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text('Дата создания заказа: $formattedDate'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text('Сумма заказа: ${order.fullPrice}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
                 'Статус заказа: ${order.status == 0 ? 'В ожидании' : 'Выполнен'}'),
-            SizedBox(height: 8),
-            Text('Товары в заказе:'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
+            const Text('Товары в заказе:'),
+            const SizedBox(height: 8),
             ...order.items.map(
                 (item) => Text('- ${item.name}, Количество: ${item.count}')),
           ],
@@ -57,7 +57,6 @@ class OrderDetailsScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
           } else if (index == 1) {
             Navigator.pushNamed(context, '/catalog');

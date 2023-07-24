@@ -7,6 +7,7 @@ class Product {
   int? id;
   String? price;
   double? discount;
+  @JsonKey(name: 'old_price')
   String? oldPrice;
   String? name;
   String? article;

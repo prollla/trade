@@ -6,28 +6,45 @@ part 'orderListModel.g.dart';
 class Order {
   int? id;
   List<OrderItem> items;
+  @JsonKey(name: 'user_id')
   String? userId;
+  @JsonKey(name: 'user_name')
   String? userName;
+  @JsonKey(name: 'user_phone')
   String? userPhone;
+  @JsonKey(name: 'user_email')
   String? userEmail;
+  @JsonKey(name: 'created_at')
   String createdAt;
+  @JsonKey(name: 'delivery_id')
   String? deliveryId;
+  @JsonKey(name: 'delivery_type')
   String? deliveryType;
+  @JsonKey(name: 'delivery_name')
   String? deliveryName;
+  @JsonKey(name: 'delivery_price')
   int? deliveryPrice;
+  @JsonKey(name: 'delivery_date')
   String? deliveryDate;
+  @JsonKey(name: 'payment_id')
   String? paymentId;
+  @JsonKey(name: 'payment_type')
   String? paymentType;
+  @JsonKey(name: 'payment_name')
   String? paymentName;
+  @JsonKey(name: 'items_price')
   String? itemsPrice;
   int? discount;
+  @JsonKey(name: 'full_price')
   String? fullPrice;
   String? promocode;
   String? address;
   String? comment;
+  @JsonKey(name: 'error_text')
   String? errorText;
   String? brand;
   int? status;
+  @JsonKey(name: 'repeated_days')
   int? repeatedDays;
 
 

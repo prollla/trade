@@ -21,11 +21,12 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   @override
-  Future<ApiResponse> postProductData() async {
+  Future<ApiResponse> postProductData(Map<String, dynamic> requestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(requestBody);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ApiResponse>(Options(
       method: 'POST',
@@ -212,6 +213,35 @@ class _ApiService implements ApiService {
             ))));
     var value = _result.data!
         .map((dynamic i) => Order.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<SortingOption>> sortData() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<SortingOption>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/catalog/sort_types/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => SortingOption.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

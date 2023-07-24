@@ -6,13 +6,14 @@ part 'cartModel.g.dart';
 class Product {
   int id;
   String price;
-  String? oldPrice; // Может быть null, так как в JSON-ответе это поле опционально
+  @JsonKey(name: 'old_price')
+  String? oldPrice;
   String discount;
   String name;
   String brand;
   String picture;
   String article;
-  List<Badge> badges; // Может содержать различные типы данных, поэтому используем `dynamic`
+  List<Badge> badges;
   double? rating;
   int? reviewsCount;
 
@@ -57,7 +58,8 @@ class Badge {
 @JsonSerializable()
 class CartResponse {
   String price;
-  String? oldPrice; // Может быть null, так как в JSON-ответе это поле опционально
+  @JsonKey(name: 'old_price')
+  String? oldPrice;
   int count;
   List<ProductItem> products;
 
