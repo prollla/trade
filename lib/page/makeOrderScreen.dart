@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:trade/page/orderPage.dart';
@@ -35,8 +36,22 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
         deliveries = deliveryResponse;
         paymentMethods = paymentResponse;
       });
-    } catch (e) {
+    } on DioException catch (e) {
       // Обработка ошибок
+      if (e.response != null) {
+        // Проверяем, есть ли в ответе поле error_text
+        if (e.response!.data.containsKey('error_text')) {
+          String errorText = e.response!.data['error_text'];
+          // Отображаем SnackBar с текстом ошибки
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorText)),
+          );
+        } else {
+          print("Ошибка при оформлении заказа: ${e.message}");
+        }
+      } else {
+        print("Неизвестная ошибка: $e");
+      }
     }
   }
 
@@ -113,10 +128,14 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.network(
-                        delivery.icon,
-                        width: 80,
+                      CachedNetworkImage(
+                        imageUrl: delivery.icon,
                         height: 80,
+                        width: 80,
+                        placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                       ),
                       SizedBox(height: 8.0),
                       Text(delivery.title),
@@ -152,10 +171,14 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.network(
-                        payment.icon,
+                      CachedNetworkImage(
+                        imageUrl: payment.icon,
                         width: 80,
                         height: 80,
+                        placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                       ),
                       SizedBox(height: 8.0),
                       Text(payment.title),

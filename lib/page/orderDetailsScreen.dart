@@ -59,13 +59,12 @@ class OrderDetailsScreen extends StatelessWidget {
         onTap: (index) {
           // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
-
           } else if (index == 1) {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '/catalog');
           } else if (index == 2) {
-
+            Navigator.pushNamed(context, '/cart');
           } else if (index == 3) {
-
+            Navigator.pop(context, '/orders');
           }
         },
         items: BottomNavBarItemsProvider.items,
