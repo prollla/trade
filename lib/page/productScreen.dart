@@ -8,14 +8,13 @@ import 'package:trade/page/cartScreen.dart';
 
 import '../models/sortingOptionModel.dart';
 import '../service/apiService.dart';
-import 'BottomNavBarItemsProvider.dart';// Импортируйте вашу модель данных
+import 'BottomNavBarItemsProvider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final ApiService _apiService = ApiService(Dio());
 
   ProductCard({super.key, required this.product});
-
 
   Future<void> _addToCart() async {
     try {
@@ -25,7 +24,6 @@ class ProductCard extends StatelessWidget {
       await _apiService.postCartData(requestBody);
     } catch (error) {
       print("Ошибка при выполнении POST-запроса: $error");
-      // Обработка ошибки
     }
   }
 
@@ -79,7 +77,6 @@ class ProductCard extends StatelessWidget {
                           },
                           icon: const Icon(Icons.shopping_basket)),
                     ),
-
                   ],
                 ),
               ),
@@ -116,7 +113,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
       List<SortingOption> sortingOptions = await _apiService!.sortData();
       setState(() {
         _sortingOptions = sortingOptions;
-        _selectedSortingOption = sortingOptions.isNotEmpty ? sortingOptions[0].id : null;
+        _selectedSortingOption =
+            sortingOptions.isNotEmpty ? sortingOptions[0].id : null;
         _fetchProductData();
       });
     } catch (e) {
@@ -181,20 +179,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
       ),
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: _products.length,
-        itemBuilder: (context, index) => ProductCard(product: _products[index]),
-      ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: _products.length,
+              itemBuilder: (context, index) =>
+                  ProductCard(product: _products[index]),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          if (index == 0) {} else if (index == 1) {
+          if (index == 0) {
+          } else if (index == 1) {
             Navigator.pushReplacementNamed(context, '/catalog');
           } else if (index == 2) {
             Navigator.pushNamed(context, '/cart');
@@ -207,9 +207,3 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 }
-
-
-
-
-
-

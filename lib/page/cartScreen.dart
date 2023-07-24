@@ -189,12 +189,11 @@ class _CartScreenState extends State<CartScreen> {
         onTap: (index) {
           // Обработчик нажатий на элементы нижней панели
           if (index == 0) {
-
           } else if (index == 1) {
             Navigator.pushNamed(context, '/catalog');
           } else if (index == 2) {
             Navigator.pushReplacementNamed(context, '/cart');
-          } else if( index == 3){
+          } else if (index == 3) {
             Navigator.pushNamed(context, '/orders');
           }
         },

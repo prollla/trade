@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:trade/models/orderListModel.dart';
 import 'package:trade/service/apiService.dart';
 
@@ -15,8 +16,7 @@ class _OrderScreenState extends State<OrderScreen> {
   final int _currentIndex = 3;
   List<Order> _orders = [];
   bool _isLoading = false;
-  final ApiService _orderService =
-      ApiService(Dio());
+  final ApiService _orderService = ApiService(Dio());
 
   Future<void> _fetchOrders() async {
     setState(() {
@@ -37,6 +37,13 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     super.initState();
     _fetchOrders();
+  }
+
+  String formatDateTime(String dateTimeString) {
+    final parsedDateTime = DateTime.parse(dateTimeString);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDateTime);
+    final formattedTime = DateFormat('HH:mm:ss').format(parsedDateTime);
+    return "$formattedDate $formattedTime";
   }
 
   @override
@@ -63,6 +70,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   itemCount: _orders.length,
                   itemBuilder: (context, index) {
                     Order order = _orders[index];
+                    final formattedDate = formatDateTime(order.createdAt);
                     return Card(
                       elevation: 2,
                       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -75,7 +83,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           ),
                         ),
                         title: Text('Заказ №${order.id}'),
-                        subtitle: Text('Дата создания: ${order.createdAt}'),
+                        subtitle: Text('Дата создания: $formattedDate'),
                         trailing: IconButton(
                           icon: const Icon(Icons.arrow_forward),
                           onPressed: () {

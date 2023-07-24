@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:trade/page/orderPage.dart';
 import 'package:trade/service/apiService.dart';
 
@@ -14,20 +15,35 @@ class MakeOrderScreen extends StatefulWidget {
   _MakeOrderScreenState createState() => _MakeOrderScreenState();
 }
 
-class _MakeOrderScreenState extends State<MakeOrderScreen> {
+class _MakeOrderScreenState extends State<MakeOrderScreen> with WidgetsBindingObserver {
   final ApiService apiService = ApiService(Dio());
   final _currentIndex = 3;
   List<Delivery> deliveries = [];
   Delivery? selectedDelivery;
   List<PaymentMethod> paymentMethods = [];
   PaymentMethod? selectedPaymentMethod;
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  bool isKeyboardVisible = false;
+
 
   @override
   void initState() {
     super.initState();
     _fetchDeliveries();
+    WidgetsBinding.instance?.addObserver(this);
+    KeyboardVisibilityController().onChange.listen((bool visible) {
+      setState(() {
+        isKeyboardVisible = visible;
+      });
+    });
   }
-
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
   Future<void> _fetchDeliveries() async {
     try {
       List<Delivery> deliveryResponse = await apiService.deliveryData();
@@ -57,8 +73,8 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
 
   Future<void> _makeOrder() async {
     Map<String, dynamic> requestBody = {
-      "user_name": "Anton",
-      "user_phone": "89202802099",
+      "user_name": _nameController.text,
+      "user_phone": _nameController.text,
       "delivery_id": selectedDelivery!.id,
       "delivery_type": selectedDelivery!.type,
       "payment_id": selectedPaymentMethod!.id,
@@ -83,7 +99,6 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +114,25 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text('Введите имя:'),
+          TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              hintText: 'Введите ваше имя',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          const Text('Введите номер телефона:'),
+          TextFormField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              hintText: 'Введите номер телефона',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16.0),
           const Text('Выберите способ доставки:'),
           Wrap(
             spacing: 8.0,
@@ -128,9 +162,9 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                         height: 80,
                         width: 80,
                         placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                            const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                            const Icon(Icons.error),
                       ),
                       const SizedBox(height: 8.0),
                       Text(delivery.title),
@@ -171,9 +205,9 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                         width: 80,
                         height: 80,
                         placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                            const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                            const Icon(Icons.error),
                       ),
                       const SizedBox(height: 8.0),
                       Text(payment.title),
@@ -185,14 +219,16 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
           ),
         ],
       ),
-      floatingActionButton: Container(
+      floatingActionButton: !isKeyboardVisible ? SizedBox(
         width: 360,
         height: 50,
         child: ElevatedButton(
           onPressed: () {
-            if (selectedDelivery != null && selectedPaymentMethod != null) {
+            if (selectedDelivery != null && selectedPaymentMethod != null &&
+                _nameController.text.isNotEmpty &&
+                _phoneController.text.isNotEmpty) {
               _makeOrder();
-              Navigator.pushNamed(context, '/orders');
+              Navigator.pushReplacementNamed(context, '/orders');
             }
           },
           style: ElevatedButton.styleFrom(
@@ -200,7 +236,8 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
           ),
           child: const Text('Оформить заказ'),
         ),
-      ),
+      )
+      :null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
